@@ -12,6 +12,7 @@ interface ChartDataPoint {
 
 export default function RevenueChart() {
   const [chartData, setChartData] = useState<ChartDataPoint[]>([])
+  const [neetPortfolioPercent, setNeetPortfolioPercent] = useState<number | null>(null)
 
   useEffect(() => {
     async function loadChartData() {
@@ -19,7 +20,22 @@ export default function RevenueChart() {
         const response = await fetch('/api/chart')
         const result = await response.json()
         if (result.data && Array.isArray(result.data)) {
-          setChartData(result.data)
+          const data = result.data
+          setChartData(data)
+          
+          // Calculate total current value of all tokens
+          const totalCurrentValue = data.reduce((sum: number, token: ChartDataPoint) => sum + (token.currentValue || 0), 0)
+          
+          // Find neet token
+          const neetToken = data.find((token: ChartDataPoint) => token.symbol?.toLowerCase() === 'neet')
+          
+          if (neetToken && totalCurrentValue > 0) {
+            // Calculate neet's percentage of total portfolio
+            const percent = (neetToken.currentValue / totalCurrentValue) * 100
+            setNeetPortfolioPercent(percent)
+          } else {
+            setNeetPortfolioPercent(null)
+          }
         }
       } catch (error) {
         console.error('Error loading chart data:', error)
@@ -127,13 +143,16 @@ export default function RevenueChart() {
         </div>
       )}
 
-      <div className="mt-4 pt-4 border-t border-dark-border space-y-3 text-xs text-gray-400 leading-relaxed">
-        <p>
-          This chart highlights how poorly Pump.fun's investment strategy has performed overall. Nearly all tokens in the portfolio have lost over 80% of their initial value, with most sitting deep in the red.
-        </p>
-        <p>
-          The only notable exception is $NEET, which has significantly appreciated and now represents the majority of the portfolio's remaining value. This suggests that while a few isolated picks succeeded, the broader allocation was highly inefficient, resulting in massive unrealized losses across nearly every other token.
-        </p>
+      <div className="mt-4 pt-4 border-t border-dark-border">
+        {neetPortfolioPercent !== null ? (
+          <p className="text-sm text-gray-500 text-center leading-relaxed">
+            neet accounts for {neetPortfolioPercent.toFixed(1)}% of GFF
+          </p>
+        ) : (
+          <p className="text-sm text-gray-500 text-center leading-relaxed">
+            Loading portfolio data...
+          </p>
+        )}
       </div>
     </div>
   )

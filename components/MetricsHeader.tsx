@@ -4,15 +4,8 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { TokenMetrics } from '@/types'
 
-interface ChartDataPoint {
-  token: string
-  symbol: string
-  currentValue: number
-}
-
 export default function MetricsHeader() {
   const [metrics, setMetrics] = useState<TokenMetrics | null>(null)
-  const [neetPortfolioPercent, setNeetPortfolioPercent] = useState<number | null>(null)
 
   useEffect(() => {
     async function loadMetrics() {
@@ -27,36 +20,6 @@ export default function MetricsHeader() {
       }
     }
     loadMetrics()
-  }, [])
-
-  useEffect(() => {
-    async function loadChartData() {
-      try {
-        const response = await fetch('/api/chart')
-        const result = await response.json()
-        if (result.data && Array.isArray(result.data)) {
-          const chartData: ChartDataPoint[] = result.data
-          
-          // Calculate total current value of all tokens
-          const totalCurrentValue = chartData.reduce((sum, token) => sum + (token.currentValue || 0), 0)
-          
-          // Find neet token
-          const neetToken = chartData.find(token => token.symbol?.toLowerCase() === 'neet')
-          
-          if (neetToken && totalCurrentValue > 0) {
-            // Calculate neet's percentage of total portfolio
-            const percent = (neetToken.currentValue / totalCurrentValue) * 100
-            setNeetPortfolioPercent(percent)
-          } else {
-            setNeetPortfolioPercent(null)
-          }
-        }
-      } catch (error) {
-        console.error('Error loading chart data:', error)
-        setNeetPortfolioPercent(null)
-      }
-    }
-    loadChartData()
   }, [])
 
   if (!metrics) {
@@ -179,11 +142,6 @@ export default function MetricsHeader() {
                 Glass Full Foundation (GFF): we bought a token and never worked again
               </a>
             </p>
-            {neetPortfolioPercent !== null && (
-              <p className="text-sm text-gray-500 text-center mt-2">
-                neet accounts for {neetPortfolioPercent.toFixed(1)}% of GFF
-              </p>
-            )}
       </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="bg-dark-surface p-6 rounded-lg border border-dark-border">
