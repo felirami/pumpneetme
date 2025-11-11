@@ -1,0 +1,47 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="64" height="64" fill="#0a0a0a"/>
+  
+  <!-- Globe circle outline -->
+  <circle cx="32" cy="32" r="30" fill="#ffffff" stroke="#1a1a1a" stroke-width="0.5"/>
+  
+  <!-- Latitude lines (horizontal curves on globe) -->
+  <ellipse cx="32" cy="18" rx="26" ry="3" fill="none" stroke="#1a1a1a" stroke-width="0.4" opacity="0.6"/>
+  <ellipse cx="32" cy="26" rx="28" ry="4" fill="none" stroke="#1a1a1a" stroke-width="0.4" opacity="0.6"/>
+  <ellipse cx="32" cy="34" rx="30" ry="5" fill="none" stroke="#1a1a1a" stroke-width="0.4" opacity="0.6"/>
+  <ellipse cx="32" cy="42" rx="28" ry="4" fill="none" stroke="#1a1a1a" stroke-width="0.4" opacity="0.6"/>
+  <ellipse cx="32" cy="50" rx="26" ry="3" fill="none" stroke="#1a1a1a" stroke-width="0.4" opacity="0.6"/>
+  
+  <!-- Longitude lines (vertical curves on globe) -->
+  <path d="M 2 32 Q 32 16, 62 32" fill="none" stroke="#1a1a1a" stroke-width="0.4" opacity="0.6"/>
+  <path d="M 6 32 Q 32 20, 58 32" fill="none" stroke="#1a1a1a" stroke-width="0.4" opacity="0.6"/>
+  <path d="M 58 32 Q 32 44, 6 32" fill="none" stroke="#1a1a1a" stroke-width="0.4" opacity="0.6"/>
+  <path d="M 62 32 Q 32 48, 2 32" fill="none" stroke="#1a1a1a" stroke-width="0.4" opacity="0.6"/>
+  
+  <!-- Continents (black landmasses) -->
+  <!-- North America (Greenland/Canada area) -->
+  <path d="M 12 14 Q 16 12, 20 14 Q 22 16, 20 18 Q 18 20, 16 18 Q 14 16, 12 14 Z" fill="#1a1a1a"/>
+  <!-- North America (mainland) -->
+  <path d="M 14 18 Q 18 18, 22 20 Q 22 24, 20 26 Q 18 24, 16 22 Q 14 20, 14 18 Z" fill="#1a1a1a"/>
+  <!-- South America -->
+  <path d="M 18 28 Q 20 30, 20 38 Q 18 40, 16 38 Q 16 32, 18 28 Z" fill="#1a1a1a"/>
+  <!-- Europe -->
+  <path d="M 24 20 Q 26 22, 28 24 Q 28 26, 26 28 Q 24 26, 24 22 Q 24 20, 24 20 Z" fill="#1a1a1a"/>
+  <!-- Africa -->
+  <path d="M 26 24 Q 28 26, 28 34 Q 26 36, 24 34 Q 24 28, 26 24 Z" fill="#1a1a1a"/>
+  
+  <!-- NEET Text - Drop shadow first (black, offset bottom-right) -->
+  <text x="33" y="38" font-family="Arial, sans-serif" font-size="16" font-weight="900" fill="#000000" opacity="0.5" text-anchor="middle" letter-spacing="2">
+    <tspan x="33" dy="0">NEET</tspan>
+  </text>
+  
+  <!-- NEET Text - Main grey fill -->
+  <text x="32" y="37" font-family="Arial, sans-serif" font-size="16" font-weight="900" fill="#666666" text-anchor="middle" letter-spacing="2">
+    <tspan x="32" dy="0">NEET</tspan>
+  </text>
+  
+  <!-- NEET Text - White outline -->
+  <text x="32" y="37" font-family="Arial, sans-serif" font-size="16" font-weight="900" fill="none" stroke="#ffffff" stroke-width="1.5" text-anchor="middle" letter-spacing="2">
+    <tspan x="32" dy="0">NEET</tspan>
+  </text>
+</svg>
