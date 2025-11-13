@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server'
 import { syncAllData, getSyncStatus } from '@/lib/sync'
 
+// Mark as dynamic to allow request.url usage
+export const dynamic = 'force-dynamic'
+
 // Sync endpoint (called by Vercel Cron Job)
 // Vercel Cron Jobs will call this endpoint every 6 hours
 // IMPORTANT: This endpoint ONLY works via Vercel Cron Jobs to prevent API call usage
