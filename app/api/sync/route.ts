@@ -1,10 +1,11 @@
 import { NextResponse } from 'next/server'
 import { syncAllData, getSyncStatus } from '@/lib/sync'
 
-// Manual sync endpoint (ONLY called via Vercel Cron Job)
+// Sync endpoint (called by Vercel Cron Job)
 // Vercel Cron Jobs will call this endpoint every 6 hours
 // IMPORTANT: This endpoint ONLY works via Vercel Cron Jobs to prevent API call usage
-export async function POST(request: Request) {
+// Vercel cron jobs use GET requests by default, but we'll accept both GET and POST
+async function handleSync(request: Request) {
   try {
     // Check for Vercel Cron Job requests
     // Vercel cron jobs send various headers - check multiple possibilities
