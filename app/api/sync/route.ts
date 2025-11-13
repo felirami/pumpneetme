@@ -6,14 +6,29 @@ import { syncAllData, getSyncStatus } from '@/lib/sync'
 // IMPORTANT: This endpoint ONLY works via Vercel Cron Jobs to prevent API call usage
 export async function POST(request: Request) {
   try {
-    // ONLY allow Vercel Cron Job requests - reject all manual calls
-    // Vercel automatically adds the 'x-vercel-cron' header for cron jobs
-    const isVercelCron = request.headers.get('x-vercel-cron') === '1'
+    // Check for Vercel Cron Job requests
+    // Vercel cron jobs send various headers - check multiple possibilities
+    const cronHeader = request.headers.get('x-vercel-cron')
+    const authorization = request.headers.get('authorization')
+    const userAgent = request.headers.get('user-agent') || ''
+    
+    // Vercel cron jobs can send the header as '1' or the cron job name
+    const isVercelCron = cronHeader === '1' || 
+                         cronHeader === 'true' || 
+                         (cronHeader && cronHeader.length > 0) ||
+                         (userAgent.includes('vercel-cron') || userAgent.includes('vercel'))
+    
+    // Log headers for debugging
+    console.log('[SYNC API] Headers:', {
+      'x-vercel-cron': cronHeader,
+      'authorization': authorization ? 'present' : 'missing',
+      'user-agent': userAgent,
+      'isVercelCron': isVercelCron
+    })
     
     // Allow manual trigger with secret token (for admin/debugging)
-    const authHeader = request.headers.get('authorization')
     const secretToken = process.env.SYNC_SECRET_TOKEN || 'temporary-admin-token-2025'
-    const isAuthorized = authHeader === `Bearer ${secretToken}`
+    const isAuthorized = authorization === `Bearer ${secretToken}`
     
     if (!isVercelCron && !isAuthorized) {
       console.warn('[SYNC API] Rejected - not a Vercel Cron Job request or authorized manual trigger')
@@ -25,6 +40,10 @@ export async function POST(request: Request) {
     
     if (isAuthorized) {
       console.log('[SYNC API] Manual trigger authorized via secret token')
+    }
+    
+    if (isVercelCron) {
+      console.log('[SYNC API] Vercel Cron Job detected - proceeding with sync')
     }
     
     console.log('[SYNC API] Starting sync via Vercel Cron Job...')
