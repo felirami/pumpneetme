@@ -71,8 +71,27 @@ async function handleSync(request: Request) {
   }
 }
 
-// GET endpoint to check sync status
-export async function GET() {
+// POST endpoint - for manual triggers
+export async function POST(request: Request) {
+  return handleSync(request)
+}
+
+// GET endpoint - Vercel cron jobs use GET by default
+export async function GET(request: Request) {
+  // Check if this is a sync request (from cron) or status check
+  const userAgent = request.headers.get('user-agent') || ''
+  const cronHeader = request.headers.get('x-vercel-cron')
+  const isCronRequest = userAgent.includes('vercel-cron') || 
+                       cronHeader === '1' || 
+                       cronHeader === 'true' ||
+                       (cronHeader && cronHeader.length > 0)
+  
+  if (isCronRequest) {
+    console.log('[SYNC API] GET request from Vercel Cron Job detected')
+    return handleSync(request)
+  }
+  
+  // Otherwise return sync status
   try {
     const status = getSyncStatus()
     return NextResponse.json({
