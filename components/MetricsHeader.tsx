@@ -156,11 +156,15 @@ export default function MetricsHeader() {
           </div>
           <div className="bg-dark-surface p-6 rounded-lg border border-dark-border">
             <div className="text-gray-400 text-sm mb-2">$neet Unrealized PnL</div>
-            <div className="text-2xl font-semibold text-green-500">{formatCurrency(metrics.neetUnrealizedPnLUSD)}</div>
+            <div className={`text-2xl font-semibold ${metrics.neetUnrealizedPnLUSD >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+              {formatCurrency(metrics.neetUnrealizedPnLUSD)}
+            </div>
           </div>
           <div className="bg-dark-surface p-6 rounded-lg border border-dark-border">
             <div className="text-gray-400 text-sm mb-2">$neet Unrealized PnL %</div>
-            <div className="text-2xl font-semibold text-green-500">{formatPercentage(metrics.neetUnrealizedPnLPercent)}</div>
+            <div className={`text-2xl font-semibold ${metrics.neetUnrealizedPnLPercent >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+              {formatPercentage(metrics.neetUnrealizedPnLPercent)}
+            </div>
           </div>
         </div>
     </div>
