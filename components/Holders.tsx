@@ -133,9 +133,9 @@ export default function Holders() {
     const percentage = num * 100
     const isPositive = percentage >= 0
     const color = isPositive ? 'text-green-500' : 'text-red-500'
-    const sign = isPositive ? '+' : ''
+    const sign = isPositive ? '+' : '-'
     const formatted = `${Math.abs(percentage).toFixed(2)}%`
-    const exact = `${sign}${percentage.toFixed(6)}%`
+    const exact = `${percentage >= 0 ? '+' : ''}${percentage.toFixed(6)}%`
     return (
       <span 
         className={`${color} cursor-help`} 
